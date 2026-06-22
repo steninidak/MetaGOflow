@@ -9,7 +9,7 @@ assemble: true
 threads: 40
 
 # As a rule of thumb keep that as floor(threads/8) where threads the previous parameter
-interproscan_threads: 5
+interproscan_threads: 4
 
 # fastp parameters
 detect_adapter_for_pe: false
@@ -35,7 +35,7 @@ cgc_chunk_size: 200
 # diamond_maxTargetSeqs: 1
 
 # Functional annotation
-protein_chunk_size_IPS: 1000000 # 20000000
+protein_chunk_size_IPS: 250000
 protein_chunk_size_eggnog: 4000000
 protein_chunk_size_hmm: 4000000
 
@@ -96,4 +96,3 @@ processed_read_files:
     path:  workflows/pseudo_files/pseudo_1_clean.fastq.trimmed.fasta
   - class: File
     path:  workflows/pseudo_files/pseudo_2_clean.fastq.trimmed.fasta
-

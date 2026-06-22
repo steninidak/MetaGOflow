@@ -14,10 +14,12 @@ requirements:
     listing:
       - entry: $(inputs.databases)
         entryname: $("/opt/interproscan/data")
-        writable: true
+        # The database is shared by every scattered InterProScan job. Keep it
+        # read-only so CWL can bind/link it instead of copying it per chunk.
+        writable: false
   - class: ResourceRequirement 
-    ramMin: 15000
-    coresMin: 4
+    ramMin: 18000
+    coresMin: $(inputs.cpu)
   - class: NetworkAccess
     networkAccess: true
 

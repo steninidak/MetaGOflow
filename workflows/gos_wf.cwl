@@ -40,7 +40,7 @@ inputs:
         Number of threads to be used from each tool. User may set this to as many as the system can provide for faster performance.
 
   # Interproscan
-  interproscan_threads: {type: int, default: 8}
+  interproscan_threads: {type: int, default: 4}
 
   # Steps
   qc_and_merge_step: 
