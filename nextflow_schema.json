@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "MetaGOflow Nextflow parameters",
+  "type": "object",
+  "definitions": {
+    "input_output": {
+      "title": "Input/output",
+      "type": "object",
+      "properties": {
+        "reads": {
+          "type": "string",
+          "description": "Paired FASTQ glob, for example sample_{1,2}.fastq.gz"
+        },
+        "db_dir": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "MetaGOflow reference database directory"
+        },
+        "outdir": {
+          "type": "string",
+          "format": "directory-path",
+          "default": "results"
+        }
+      }
+    },
+    "stages": {
+      "title": "Pipeline stages",
+      "type": "object",
+      "properties": {
+        "qc_and_merge_step": {"type": "boolean", "default": true},
+        "taxonomic_inventory": {"type": "boolean", "default": true},
+        "cgc_step": {"type": "boolean", "default": false},
+        "reads_functional_annotation": {"type": "boolean", "default": false},
+        "assemble": {"type": "boolean", "default": false}
+      }
+    },
+    "resources": {
+      "title": "Resources",
+      "type": "object",
+      "properties": {
+        "threads": {"type": "integer", "minimum": 1, "default": 5},
+        "interproscan_threads": {"type": "integer", "minimum": 1, "default": 4},
+        "max_cpus": {"type": "integer", "minimum": 1, "default": 64},
+        "max_memory": {"type": "string", "default": "128 GB"},
+        "max_time": {"type": "string", "default": "7d"}
+      }
+    },
+    "restart": {
+      "title": "Restart from intermediate files",
+      "type": "object",
+      "properties": {
+        "processed_reads": {"type": "string", "format": "file-path"},
+        "input_for_motus": {"type": "string", "format": "file-path"},
+        "maskfile": {"type": "string", "format": "file-path"},
+        "processed_read_files": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "string", "format": "file-path"}
+        },
+        "predicted_faa_from_previous_run": {"type": "string", "format": "file-path"}
+      }
+    }
+  },
+  "allOf": [
+    {"$ref": "#/definitions/input_output"},
+    {"$ref": "#/definitions/stages"},
+    {"$ref": "#/definitions/resources"},
+    {"$ref": "#/definitions/restart"}
+  ]
+}
+

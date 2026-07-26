@@ -56,6 +56,23 @@ db_kofam/  diamond/  eggnog/  GO-slim/  interproscan-5.57-90.0/  kegg_pathways/ 
 
 ## How to run
 
+### Nextflow (recommended)
+
+MetaGOflow now includes a scalable Nextflow DSL2 implementation of the active
+CWL pipeline. A complete containerized run can be launched with:
+
+```bash
+nextflow run main.nf -profile singularity \
+  --reads 'test_input/wgs-paired-SRR1620013_{1,2}.fastq.gz' \
+  --db_dir ref-dbs --outdir results
+```
+
+The implementation supports Docker, Singularity/Apptainer, Slurm, `-resume`,
+stage-specific restarts, execution reports, traces, timelines, and a DAG.
+See [the Nextflow guide](docs/nextflow.md) for full runs, partial runs, and
+cluster configuration. The CWL runner below remains available during the
+migration period.
+
 We recommend utilizing [Conda](https://docs.conda.io/projects/conda/en/stable/) to create a virtual environment. We provide a Conda [environment file](conda_environment.yml) that includes the necessary dependencies.
 
 ### Set up the environment
