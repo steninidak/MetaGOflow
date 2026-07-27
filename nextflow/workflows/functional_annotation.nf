@@ -163,12 +163,20 @@ workflow FUNCTIONAL_ANNOTATION {
     ips_chunks = SPLIT_PROTEINS.out.filter { kind, f -> kind == 'ips' }.map { kind, f -> f }.flatten()
     hmm_chunks = SPLIT_PROTEINS.out.filter { kind, f -> kind == 'hmm' }.map { kind, f -> f }.flatten()
 
-    egg_db = Channel.value(file("${params.db_dir}/eggnog/eggnog.db", checkIfExists: true))
-    diamond_db = Channel.value(file("${params.db_dir}/eggnog/eggnog_proteins.dmnd", checkIfExists: true))
-    egg_dir = Channel.value(file("${params.db_dir}/eggnog", checkIfExists: true))
-    ips_dir = Channel.value(file("${params.db_dir}/interproscan-5.77-100.0/data", checkIfExists: true))
-    hmm_db = Channel.value(file("${params.db_dir}/db_kofam/db_kofam.hmm", checkIfExists: true))
-    hmm_dir = Channel.value(file("${params.db_dir}/db_kofam", checkIfExists: true))
+    eggDataPath = params.eggnog_data_dir ?: "${params.db_dir}/eggnog"
+    eggDbPath = params.eggnog_database ?: "${eggDataPath}/eggnog.db"
+    eggDiamondPath = params.eggnog_diamond_database ?: "${eggDataPath}/eggnog_proteins.dmnd"
+    ipsDataPath = params.interproscan_data_dir ?: "${params.db_dir}/interproscan-5.77-108.0/data"
+    hmmDirPath = params.hmm_database_dir ?: "${params.db_dir}/db_kofam"
+    hmmDbPath = params.hmm_database ?: "${hmmDirPath}/db_kofam.hmm"
+    koPath = params.ko_description_file ?: "${params.db_dir}/kofam_ko_desc.tsv"
+
+    egg_db = Channel.value(file(eggDbPath, checkIfExists: true))
+    diamond_db = Channel.value(file(eggDiamondPath, checkIfExists: true))
+    egg_dir = Channel.value(file(eggDataPath, checkIfExists: true))
+    ips_dir = Channel.value(file(ipsDataPath, checkIfExists: true))
+    hmm_db = Channel.value(file(hmmDbPath, checkIfExists: true))
+    hmm_dir = Channel.value(file(hmmDirPath, checkIfExists: true))
 
     EGGNOG(egg_chunks, egg_db, diamond_db, egg_dir)
     INTERPROSCAN(ips_chunks, ips_dir)
@@ -178,7 +186,7 @@ workflow FUNCTIONAL_ANNOTATION {
         INTERPROSCAN.out.collect(),
         HMMSEARCH.out.collect()
     )
-    ko = Channel.value(file("${params.db_dir}/kofam_ko_desc.tsv", checkIfExists: true))
+    ko = Channel.value(file(koPath, checkIfExists: true))
     FUNCTIONAL_SUMMARIES(
         COMBINE_FUNCTIONAL_RESULTS.out.eggnog,
         COMBINE_FUNCTIONAL_RESULTS.out.ips,
@@ -193,4 +201,3 @@ workflow FUNCTIONAL_ANNOTATION {
     stats = FUNCTIONAL_SUMMARIES.out.stats
     summaries = FUNCTIONAL_SUMMARIES.out.summaries
 }
-

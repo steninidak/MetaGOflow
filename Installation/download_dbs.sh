@@ -48,8 +48,8 @@ if ((OPTIND == 1)); then
     exit 1
 fi
 
-CWD=$(pwd)
 mkdir -p "${OUTPUT}" && cd "${OUTPUT}" || exit 1
+OUTPUT=$(pwd)
 
 # MGnify base FTP server with related dbs
 export FTP_DBS=ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/
@@ -86,7 +86,7 @@ echo "Downloading the rfam_models"
 mkdir Rfam
 cd Rfam
 
-mkdir ribosomal
+mkdir -p ribosomal other
 
 wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/rfam_models/ribosomal_models/RF*.cm \
     ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/rfam_models/ribosomal_models/ribo.claninfo \
@@ -99,7 +99,7 @@ wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/rRNA.cl
 wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/rfam_models/other_models/*.cm \
     -P other
 
-cd "${CWD}"/"${OUTPUT}"
+cd "${OUTPUT}"
 
 # download IPS #
 echo 'download IPS'
@@ -116,7 +116,8 @@ wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/db_kofa
 wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/db_kofam.hmm.h3i.gz -P db_kofam
 wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/db_kofam.hmm.h3m.gz -P db_kofam
 wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/db_kofam.hmm.h3p.gz -P db_kofam
-gunzip db_kofam/db_kofam.hmm.h3f.gz db_kofam/db_kofam.hmm.h3i.gz db_kofam/db_kofam.hmm.h3m.gz db_kofam/db_kofam.hmm.h3p.gz
+wget ftp://ftp.ebi.ac.uk/pub/databases/metagenomics/pipeline-5.0/ref-dbs/db_kofam.hmm.gz -P db_kofam
+gunzip db_kofam/db_kofam.hmm.h3f.gz db_kofam/db_kofam.hmm.h3i.gz db_kofam/db_kofam.hmm.h3m.gz db_kofam/db_kofam.hmm.h3p.gz db_kofam/db_kofam.hmm.gz
 
 # ko file
 wget $FTP_DBS/kofam_ko_desc.tsv

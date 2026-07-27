@@ -16,6 +16,41 @@
           "format": "directory-path",
           "description": "MetaGOflow reference database directory"
         },
+        "interproscan_data_dir": {
+          "type": ["string", "null"],
+          "format": "directory-path",
+          "description": "Override the InterProScan data directory"
+        },
+        "eggnog_data_dir": {
+          "type": ["string", "null"],
+          "format": "directory-path",
+          "description": "Override the eggNOG data directory"
+        },
+        "eggnog_database": {
+          "type": ["string", "null"],
+          "format": "file-path",
+          "description": "Override the eggNOG SQLite database"
+        },
+        "eggnog_diamond_database": {
+          "type": ["string", "null"],
+          "format": "file-path",
+          "description": "Override the eggNOG DIAMOND database"
+        },
+        "hmm_database": {
+          "type": ["string", "null"],
+          "format": "file-path",
+          "description": "Override the KOfam HMM database file"
+        },
+        "hmm_database_dir": {
+          "type": ["string", "null"],
+          "format": "directory-path",
+          "description": "Override the directory containing the KOfam database and indexes"
+        },
+        "ko_description_file": {
+          "type": ["string", "null"],
+          "format": "file-path",
+          "description": "Override the KOfam KO description table"
+        },
         "outdir": {
           "type": "string",
           "format": "directory-path",

@@ -70,9 +70,11 @@ nextflow run main.nf -profile singularity \
 The implementation supports Docker, Singularity/Apptainer, Slurm, `-resume`,
 stage-specific restarts, execution reports, traces, timelines, and a DAG.
 It also produces an RO-Crate 1.1 ZIP after each successful analysis.
-See [the Nextflow guide](docs/nextflow.md) for full runs, partial runs, and
-cluster configuration. The CWL runner below remains available during the
-migration period.
+See the [complete installation manual](docs/installation.md) for host, runtime,
+database, HPC, validation, and troubleshooting setup. See
+[the Nextflow guide](docs/nextflow.md) for full runs, partial runs, and cluster
+configuration. The CWL runner below remains available during the migration
+period.
 
 We recommend utilizing [Conda](https://docs.conda.io/projects/conda/en/stable/) to create a virtual environment. We provide a Conda [environment file](conda_environment.yml) that includes the necessary dependencies.
 
