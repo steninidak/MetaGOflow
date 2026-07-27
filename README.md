@@ -69,6 +69,7 @@ nextflow run main.nf -profile singularity \
 
 The implementation supports Docker, Singularity/Apptainer, Slurm, `-resume`,
 stage-specific restarts, execution reports, traces, timelines, and a DAG.
+It also produces an RO-Crate 1.1 ZIP after each successful analysis.
 See [the Nextflow guide](docs/nextflow.md) for full runs, partial runs, and
 cluster configuration. The CWL runner below remains available during the
 migration period.

@@ -87,3 +87,10 @@ execution trace, report, timeline, and DAG. The work directory is deliberately
 kept outside the result set so `-resume` remains available; remove it only
 after the run is accepted.
 
+After a successful run, MetaGOflow creates
+`outdir/ro-crate/<run-name>.ro-crate.zip`. The RO-Crate 1.1 archive contains
+the analysis results, available execution trace, Nextflow sources, resolved
+parameters, SHA-256 checksums, file media types, and workflow-run provenance.
+The final HTML report and timeline remain in `outdir/pipeline_info`. Result
+files remain in `outdir`, preserving Nextflow's `-resume` behavior. Disable
+packaging with `--ro_crate false`.

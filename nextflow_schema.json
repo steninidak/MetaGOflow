@@ -20,6 +20,11 @@
           "type": "string",
           "format": "directory-path",
           "default": "results"
+        },
+        "ro_crate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Create a ZIP-packaged RO-Crate after successful analysis"
         }
       }
     },
@@ -69,4 +74,3 @@
     {"$ref": "#/definitions/restart"}
   ]
 }
-

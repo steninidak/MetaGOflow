@@ -12,6 +12,7 @@ include { RNA_TAXONOMY }          from './nextflow/workflows/taxonomy'
 include { COMBINED_GENE_CALLER }  from './nextflow/workflows/gene_calling'
 include { FUNCTIONAL_ANNOTATION } from './nextflow/workflows/functional_annotation'
 include { MEGAHIT }               from './nextflow/workflows/assembly'
+include { RO_CRATE }               from './nextflow/workflows/ro_crate'
 
 /*
  * MetaGOflow DSL2 entry point.
@@ -49,6 +50,7 @@ workflow {
     Channel.empty().set { motus_input_ch }
     Channel.empty().set { ncrna_ch }
     Channel.empty().set { proteins_ch }
+    crate_completion_ch = Channel.of('workflow-started')
 
     if (enabled(params.qc_and_merge_step)) {
         if (!params.reads)
@@ -58,6 +60,7 @@ workflow {
         merged_ch       = QC.out.merged_fasta
         paired_fasta_ch = QC.out.filtered_pair.collect()
         motus_input_ch  = QC.out.motus_input
+        crate_completion_ch = crate_completion_ch.mix(QC.out.stats.map { 'qc' })
     }
     else {
         if (params.processed_reads)
@@ -77,6 +80,9 @@ workflow {
         MOTUS(motus_reads_ch)
         RNA_TAXONOMY(merged_ch)
         ncrna_ch = RNA_TAXONOMY.out.ncrna
+        crate_completion_ch = crate_completion_ch
+            .mix(MOTUS.out.taxonomy.map { 'motus' })
+            .mix(RNA_TAXONOMY.out.taxonomy_summary.map { 'rna-taxonomy' })
     }
     else if (params.maskfile) {
         ncrna_ch = Channel.value(file(params.maskfile, checkIfExists: true))
@@ -85,6 +91,8 @@ workflow {
     if (enabled(params.cgc_step)) {
         COMBINED_GENE_CALLER(merged_ch)
         proteins_ch = COMBINED_GENE_CALLER.out.faa
+        crate_completion_ch = crate_completion_ch
+            .mix(COMBINED_GENE_CALLER.out.count.map { 'gene-calling' })
     }
     else if (params.predicted_faa_from_previous_run) {
         proteins_ch = Channel.value(file(params.predicted_faa_from_previous_run, checkIfExists: true))
@@ -92,9 +100,17 @@ workflow {
 
     if (enabled(params.reads_functional_annotation)) {
         FUNCTIONAL_ANNOTATION(proteins_ch, ncrna_ch)
+        crate_completion_ch = crate_completion_ch
+            .mix(FUNCTIONAL_ANNOTATION.out.stats.map { 'functional-annotation' })
     }
 
     if (enabled(params.assemble)) {
         MEGAHIT(paired_fasta_ch)
+        crate_completion_ch = crate_completion_ch
+            .mix(MEGAHIT.out.contigs.map { 'assembly' })
+    }
+
+    if (enabled(params.ro_crate)) {
+        RO_CRATE(crate_completion_ch)
     }
 }
