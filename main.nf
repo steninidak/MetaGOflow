@@ -17,9 +17,8 @@ include { RO_CRATE }               from './nextflow/workflows/ro_crate'
 /*
  * MetaGOflow DSL2 entry point.
  *
- * Unlike the CWL workflow, disabled stages do not require pseudo files. A stage
- * consumes either the output of its predecessor or the corresponding
- * --processed_* restart parameter.
+ * Disabled stages can consume either the output of an enabled predecessor or
+ * the corresponding --processed_* restart parameter.
  */
 workflow {
     if (params.help) {

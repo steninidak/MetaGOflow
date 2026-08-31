@@ -46,10 +46,9 @@ git clone https://github.com/steninidak/MetaGOflow-Nextflow.git
 cd MetaGOflow-Nextflow
 ```
 
-The repository contains both implementations:
-
-- `main.nf` and `nextflow/` — Nextflow;
-- `workflows/`, `tools/`, and `utils/` — original CWL assets.
+The workflow entry point is `main.nf`. Process and subworkflow definitions are
+kept under `nextflow/`, scheduler configuration templates under `conf/`, and
+installation helpers under `Installation/`.
 
 ## 4. Install Java
 
@@ -455,4 +454,3 @@ archival production runs.
 - `pipeline_info/trace.txt` contains successful processes.
 - The RO-Crate ZIP passes `unzip -t`.
 - A representative biological result has been reviewed before production use.
-

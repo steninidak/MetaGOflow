@@ -1,10 +1,9 @@
 # Running MetaGOflow with Nextflow
 
-The Nextflow implementation is a DSL2 translation of the active
-`workflows/gos_wf.cwl` graph. It retains the existing tools, reference
-databases, container images, five stage switches, and intermediate-file entry
-points. Nextflow provides resumable content-addressed tasks, native scatter
-through channels, and executor-specific scheduling.
+MetaGOflow is implemented in Nextflow DSL2 with containerized tools, reference
+databases, five stage switches, and intermediate-file entry points. Nextflow
+provides resumable content-addressed tasks, native scatter through channels,
+and executor-specific scheduling.
 
 ## Requirements
 
@@ -43,8 +42,7 @@ Retry an interrupted run by repeating the command with `-resume`. Nextflow
 reuses successful tasks whose inputs, commands, containers, and relevant
 configuration have not changed.
 
-Disabled upstream stages accept real intermediate files and do not need the
-CWL pseudo files:
+Disabled upstream stages accept real intermediate files:
 
 ```bash
 nextflow run main.nf -profile singularity \
@@ -64,17 +62,7 @@ For assembly without QC, pass a JSON/Groovy list:
 --processed_read_files '["forward.fasta","reverse.fasta"]'
 ```
 
-## CWL-to-Nextflow parameter changes
-
-Most public names are unchanged. Hyphenated CWL names were normalized because
-Nextflow parameters are easier to use as identifiers:
-
-| CWL | Nextflow |
-| --- | --- |
-| `min-contig-len` | `min_contig_len` |
-| `memory` (MEGAHIT fraction) | `megahit_memory` |
-| `5s_pattern` | `pattern_5s` |
-| `5.8s_pattern` | `pattern_5_8s` |
+## Resource parameters
 
 Global resource ceilings are `max_cpus`, `max_memory`, and `max_time`. Per-site
 overrides can be assigned by process label (`light`, `medium`, or `heavy`) or
